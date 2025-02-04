@@ -52,9 +52,7 @@ func startSidecar(hclConfig *config.Config, log logrus.FieldLogger) error {
 
 	if *hclConfig.DaemonMode && hclConfig.HealthCheck.ListenerEnabled {
 		log.Info("Starting health server")
-		if err := health.StartHealthServer(hclConfig.HealthCheck, log, spiffeSidecar); err != nil {
-			return err
-		}
+		go health.StartHealthServer(hclConfig.HealthCheck, log, spiffeSidecar)
 	}
 
 	if !*hclConfig.DaemonMode {

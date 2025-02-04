@@ -64,6 +64,24 @@ jwt_bundle_file_mode = 0444
 jwt_svid_file_mode = 0444
 ```
 
+### Health Check Example
+
+agent_address = "/var/run/spire/agent-sockets/socket"
+cert_dir = "/var/run/spiffe"
+renew_signal = "SIGHUP"
+svid_file_name = "svid.pem"
+svid_key_file_name = "svid_key.pem"
+svid_bundle_file_name = "svid_bundle.pem"
+jwt_svids = [{jwt_audience="sts.amazonaws.com", jwt_svid_file_name="jwt_svid.token"}]
+jwt_bundle_file_name = "bundle.json"
+daemon_mode = true
+health_checks {
+    listener_enabled = true        # Set to true to enable the health check HTTP server (applies only in daemon mode)
+    bind_port        = 8080        # Port where the health server will listen
+    liveness_path    = "/live"     # Endpoint for liveness health check
+    readiness_path   = "/ready"    # Endpoint for readiness health check
+}
+
 ### Windows example
 ```
 agent_address = "spire-agent\\public\\api"

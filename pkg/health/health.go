@@ -24,7 +24,8 @@ const (
 	statusServiceUnavailable = http.StatusServiceUnavailable
 )
 
-func StartHealthServer(healthCheckConfig CheckConfig, log logrus.FieldLogger, sidecar *sidecar.Sidecar) error {
+// StartHealthServer initializes a lightweight HTTP server dedicated to health monitoring
+func StartHealthServer(healthCheckConfig CheckConfig, log logrus.FieldLogger, sidecar *sidecar.Sidecar) {
 	http.HandleFunc(healthCheckConfig.LivenessPath, func(w http.ResponseWriter, _ *http.Request) {
 		writeResponse(w, sidecar.CheckLiveness(), log, sidecar)
 	})
@@ -37,7 +38,6 @@ func StartHealthServer(healthCheckConfig CheckConfig, log logrus.FieldLogger, si
 		WriteTimeout:      5 * time.Second,
 	}
 	log.Fatal(server.ListenAndServe())
-	return nil
 }
 
 type Response struct {
